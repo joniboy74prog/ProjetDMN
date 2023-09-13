@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+             name="Approuver un prêt"
+             id="_97b4081f-147c-4945-8442-40c134318453"
+             targetNamespace="http://www.example.com/dmn/approuver-un-pret"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/DMN/20180521/dmn.xsd ">
+
+    <!-- Définit une décision sur l'approbation d'un prêt. La décision utilise deux variables d'entrée, le salaire annuel et l'historique de crédit, pour prendre une décision d'approbation. -->
+    <decision id="Approuver un prêt" name="Approuver un prêt">
+
+        <!-- Définit la variable d'entrée "Salaire annuel". La variable est de type "nombre" et a pour nom "Salaire annuel". -->
+        <input>
+            <inputExpression id="Salaire annuel" typeRef="number">
+                <text>Salaire annuel</text>
+            </inputExpression>
+        </input>
+
+        <!-- Définit la variable d'entrée "Historique de crédit". La variable est de type "chaîne de caractères" et a pour nom "Historique de crédit". -->
+        <input>
+            <inputExpression id="Historique de crédit" typeRef="string">
+                <text>Historique de crédit</text>
+            </inputExpression>
+        </input>
+
+        <!-- Définit la variable de sortie "Approbation". La variable est de type "booléen" et a pour nom "Approbation". -->
+        <output>
+            <outputExpression id="Approbation" typeRef="boolean">
+                <text>Approbation</text>
+            </outputExpression>
+        </output>
+
+        <!-- Définit la règle "Salaire annuel supérieur à 30 000 €". La règle approuve le prêt si le salaire annuel du demandeur est supérieur à 30 000 €. -->
+        <rule id="Salaire annuel supérieur à 30 000 €">
+            <inputEntry id="_34721712-1143-4c2d-890d-e54843926880">
+                <text>Salaire annuel &gt; 30 000 €</text>
+            </inputEntry>
+            <outputEntry id="_58509376-48e3-4d8d-8911-950530085098">
+                <text>true</text>
+            </outputEntry>
+        </rule>
+
+        <!-- Définit la règle "Historique de crédit non en retard". La règle approuve également le prêt si l'historique de crédit du demandeur est sans retard. -->
+        <rule id="Historique de crédit non en retard">
+            <inputEntry id="_98f0603a-1685-473d-9765-7067f5126e5">
+                <text>Historique de crédit != "En retard"</text>
+            </inputEntry>
+            <outputEntry id="_9c396401-2332-4680-825d-77583a328453">
+                <text>true</text>
+            </outputEntry>
+        </rule>
+
+        <!-- Définit la règle "Décision par défaut". Si aucune des règles précédentes ne s'applique, la règle approuve le prêt. -->
+        <rule id="Décision par défaut">
+            <outputEntry id="_02219595-f09e-4757-a31c-934641f1975e">
+                <text>false</text>
+            </outputEntry>
+        </rule>
+
+    </decision>
+
+</definitions>
