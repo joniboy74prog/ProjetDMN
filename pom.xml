@@ -18,15 +18,29 @@
   <dependencies>
 
 
+        <dependency>
+          <groupId>org.camunda.bpm.dmn</groupId>
+          <artifactId>camunda-engine-dmn-bom</artifactId>
+          <version> 7.19.0</version>
+          <type>pom</type>
+          <scope>import</scope>
+        </dependency>
+
     <dependency>
       <groupId>org.camunda.bpm.model</groupId>
       <artifactId>camunda-dmn-model</artifactId>
       <version>7.19.0</version>
     </dependency>
     <dependency>
-      <groupId>org.kie</groupId>
-      <artifactId>kie-dmn-api</artifactId>
-      <version>9.44.0.Final</version>
+      <groupId>org.camunda.bpm.dmn</groupId>
+      <artifactId>camunda-engine-dmn</artifactId>
+      <version> 7.19.0</version>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.21</version>
+    </dependency>
+
   </dependencies>
 </project>
