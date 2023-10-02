@@ -9,6 +9,12 @@
   "author": "matthias et gabriel",
   "license": "ISC",
   "dependencies": {
-    "typescript": "^5.2.2"
+    "json": "^11.0.0",
+    "sweetalert2": "^11.7.31",
+    "typescript": "^5.2.2",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.6"
   }
 }
