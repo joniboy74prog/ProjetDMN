@@ -2,11 +2,13 @@ class WebsocketClient {
     private socket: WebSocket;
 
     constructor() {
-        this.socket = new WebSocket("ws://localhost:3000");
+        this.socket = new WebSocket("ws://localhost:8025");
 
         // Démarre l'écoute des événements
         this.socket.onopen = () => {
             console.log("Connexion au serveur réussie");
+            this.socket.send("Winter 5");
+
         };
 
         this.socket.onmessage = (event) => {
@@ -19,9 +21,7 @@ class WebsocketClient {
     }
 
     // Envoie un message au serveur
-    public send(message: string) {
-        this.socket.send(message);
-    }
+
 }
 
 
