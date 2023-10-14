@@ -37,7 +37,7 @@ public class ParseurDMN {
                     System.err.println("Could not close stream: "+e.getMessage());
                 }
         }
-        public void afficherResultat(){
-            System.out.println(result.getFirstResult().toString());
+        public String getResultat(){
+            return result.getFirstResult().toString();
         }
 }

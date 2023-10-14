@@ -33,7 +33,7 @@ public class Serveur extends WebSocketServer {
         String[] entrees = message.split(" ");
         try {
             ParseurDMN parseur =new ParseurDMN(entrees[0], entrees[1]);
-            parseur.afficherResultat();
+            System.out.println(parseur.getResultat());
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -55,27 +55,6 @@ public class Serveur extends WebSocketServer {
     }
 
 
-    public static void main(String[] args) throws InterruptedException, IOException {
 
-            int port = 8025; // 843 flash policy port
-            Serveur s = new Serveur(new InetSocketAddress("localhost", port));
-            s.setReuseAddr(true);
-            s.start();
-            System.out.println("Serveur démarre sur le port:  " + s.getPort()
-            + "\n Tapez \"exit\" pour sortir");
-
-
-            BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
-            while (true) {
-                String in = sysin.readLine();
-                s.broadcast(in);
-                if (in.equals("exit")) {
-                    s.stop(1000);
-                    break;
-                }
-            }
-
-
-    }
 }
 
