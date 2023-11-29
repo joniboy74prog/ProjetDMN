@@ -1,8 +1,5 @@
 package org.example;
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import org.java_websocket.WebSocket;
@@ -26,7 +23,8 @@ public class Serveur extends WebSocketServer {
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         System.out.println("closed " + conn.getRemoteSocketAddress() + " with exit code " + code + " additional info: " + reason);
     }
-
+    //TODO: SPÉCIFIER COMPORTEMENT LORS DE SAISIE INCORRECTE
+    //TODO: CHANGER IMPLÉMENTATION DU MOTEUR DMN POUR CREER OBJET AVEC FICHIER ENVOYÉ PAR MESSAGE
     @Override
     public void onMessage(WebSocket conn, String message)  {
         System.out.println("received message from "	+ conn.getRemoteSocketAddress() + ": " + message);

@@ -14,22 +14,19 @@ public class ParseurDMN {
 
     public ParseurDMN(String season, String guestCount) throws FileNotFoundException{
             // prepare variables for decision evaluation
+            //ATTENTION: LE NOM DES VARIABLES DU FICHIER SE TROUVE DANS LA VALISE INPUTEXPRESSION->TEXT
             VariableMap variables = Variables
                     .putValue("season", season)
                     .putValue("guestCount", guestCount);
-
             // create a new default DMN engine
             DmnEngine dmnEngine = DmnEngineConfiguration.createDefaultDmnEngineConfiguration().buildEngine();
             // parse decision from resource input stream
             File file = new File("DMN/dmn.xml");
-
             // Créer un InputStream à partir du fichier
             InputStream inputStream = new FileInputStream(file);
             decision = dmnEngine.parseDecision("decision", inputStream);
             // evaluate decision
             result = dmnEngine.evaluateDecisionTable(decision, variables);
-
-
                 try {
                     inputStream.close();
                 }

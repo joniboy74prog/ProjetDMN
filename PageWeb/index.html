@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
@@ -6,37 +7,14 @@
         <script src="./js/index.js"></script>
         <link rel="stylesheet" href="style.css">
     </head>
-
     <body>
-        <header>
-            <div class="boite">
-                <h1>Execution DMN</h1>
-            </div>
-        </header>
-        <div>
-            <div class="wave"></div>
-            <div class="wave"></div>
-            <div class="wave"></div>
-         </div>
-         <div class="rectangle"> 
-            <h2>entrez vos paramètres</h2>  
-            <form id="formulaireParametres">
-                <label for="nombreParametres">Nombre de paramètres :</label>
-                <input type="number" id="nombreParametres" name="nombreParametres" min="1" max="5">
-                <div id="listeParametres"></div>
-                <button type="submit" id="boutonEnvoyer">Envoyer</button> 
-            </form>          
-        </div>
-        
-        <div class="rectangle"> 
-            <h2>sortie de donnée</h2>
-             <!--<div id="dataDisplay"></div>
-             <script src="websocket.js"></script>  ceci va servir a etablir la liaison websocket-->
-        </div>
-        
-
-
-        <a href="../../wallpaperflare.com_wallpaper.jpg" class="lienCompteRendu">Vers le Compte Rendu</a>
-
+        <input type = "file">
+        <br>
+        <label for="entree">Saisissez l'entrée:</label><br>
+        <input type="text" id="entree" name="notre_entree"><br>
+        <button id="envoi" >envoi</button>
+    <div id="affichage">
+        <!-- ici affichage -->
+    </div>
     </body>
 </html>
