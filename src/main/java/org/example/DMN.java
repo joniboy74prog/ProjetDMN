@@ -4,73 +4,60 @@ import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.DmnEngine;
 import org.camunda.bpm.dmn.engine.DmnEngineConfiguration;
 
-import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
-import org.camunda.bpm.engine.DecisionService;
-import org.camunda.bpm.engine.RepositoryService;
-import org.camunda.bpm.engine.impl.DecisionServiceImpl;
-import org.camunda.bpm.engine.impl.RepositoryServiceImpl;
-import org.camunda.bpm.engine.repository.DecisionDefinition;
 import org.camunda.bpm.model.dmn.Dmn;
 import org.camunda.bpm.model.dmn.DmnModelInstance;
-import org.camunda.bpm.model.dmn.instance.Decision;
 import org.camunda.bpm.model.dmn.instance.DecisionTable;
 import org.camunda.bpm.model.dmn.instance.Input;
 import org.camunda.bpm.model.dmn.instance.InputExpression;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DMN
 {
-    //fonction qui retourne une variable de type inputStream à partir du fichier dmn dans le répertoire resources
-    //commentaire: le chemin doit commencer par un / pour que le fichier soit trouvé
-    public static InputStream inputStream = DMN.class.getResourceAsStream("/dmn.xml");
-    public static List<String> getVariableNames(DecisionDefinition decisionDefinition, RepositoryService repositoryService) {
-        // Get the DMN model instance for the decision definition
-        DmnModelInstance dmnModelInstance = repositoryService.getDmnModelInstance(decisionDefinition.getId());
-        // Get the decision element from the model
-        Decision decision = dmnModelInstance.getModelElementsByType(Decision.class).iterator().next();
-        // Get the input elements (representing the variables)
-        Collection<Input> inputs = decision.getChildElementsByType(Input.class);
-        // Extract variable names from the input elements
-        return inputs.stream()
-                .map(input -> {
-                    InputExpression inputExpression = input.getChildElementsByType(InputExpression.class).iterator().next();
-                    return inputExpression.getTextContent();
-                })
-                .collect(Collectors.toList());
+    private java.util.Map<String, Object> map_variables = new java.util.HashMap<String, Object>();
+    private List<String> input_names;
+    private DmnDecision decision;
+    private DmnDecisionTableResult result;
+    //constructeur qui initialise un moteur dmn, une variable inputStream et une variable decision
+    public DMN(List<String> valeurs, String fichier) throws IOException {
+        //on recupere le fichier dmn et on le met dans une variable de type fichier
+        //on recupere une inputStream à partir du fichier sourceDmn
+        //BUG: le stream est nul alors que la chaine de caractères est bien reçue (heureusement)
+        //BUG Corrigé: il fallait mettre le fichier dans un byte array
+        InputStream sourceVariables = new ByteArrayInputStream(fichier.getBytes());
+        InputStream sourceFichier= new ByteArrayInputStream(fichier.getBytes());
+        //pour chaque input, on cree une variable
+        input_names = recupererInputs(sourceVariables);
+        //on itère sur les input_names et on les associe aux valeurs
+        for (int i = 0; i < input_names.size(); i++) {
+            map_variables.put(input_names.get(i), valeurs.get(i));
+        }
+        DmnEngine dmnEngine = DmnEngineConfiguration.createDefaultDmnEngineConfiguration().buildEngine();
+        this.decision = dmnEngine.parseDecision("decision", sourceFichier);
+        this.result = dmnEngine.evaluateDecisionTable(decision, map_variables);
     }
-    public static List<String> getInputExpression(InputStream inputStream){
 
+    //la méthode suivante recuperera les entrees de la table et les stockera dans une liste d'entrees
+    public List<String> recupererInputs(InputStream inputStream){
         DmnModelInstance dmnModelInstance = Dmn.readModelFromStream(inputStream);
-
         DecisionTable decisionTable = dmnModelInstance.getModelElementById("decisionTable");
         List<String> expressions = new ArrayList<>();
         Collection<Input> inputs = decisionTable.getInputs();
         inputs.stream().forEach(input->{
-            //add your logic to getInputExpression
+            // chaque variable dans "input" sera mise dans expressions. Cela facilitera la manipulation après
             InputExpression inputExpression = input.getInputExpression();
-            expressions.add(inputExpression.getText().getTextContent()); //check this returns expected o/p
+            expressions.add(inputExpression.getText().getTextContent());
         });
-
         return expressions;
     }
 
-
-    public static void main(String[] args )
-    {
-        DmnEngine dmnEngine = DmnEngineConfiguration.createDefaultDmnEngineConfiguration().buildEngine();
-/*        DmnDecision decision = dmnEngine.parseDecision("decision", inputStream);
-
-
-        java.util.Map<String, Object> variables = new java.util.HashMap<String, Object>();
-        variables.put("season", "Winter");
-        variables.put("guestCount", 10);
-        DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, variables);*/
-        System.out.println(getInputExpression(inputStream));
-
+    public String montreResultat(){
+        return this.result.getSingleResult().toString();
     }
 }
