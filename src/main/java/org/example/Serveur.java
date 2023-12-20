@@ -37,10 +37,13 @@ public class Serveur extends WebSocketServer {
         System.out.println("received message from "	+ conn.getRemoteSocketAddress());
         JsonObject jsonObject = new JsonParser().parse(message).getAsJsonObject();
         String contenuFichier = jsonObject.get("fichier").getAsString();
+        ArrayList<String> listeValeurs = new ArrayList<String>();
         try {
-            ArrayList<String> listeValeurs = new ArrayList<String>();
-            listeValeurs.add("Winter");
-            listeValeurs.add("5");
+            //la valeur entrees est une chaine de caracteres qui contient des inputs séparés par des espaces
+            //ici je vais les séparer et les mettre dans une liste
+            String entrees = jsonObject.get("entrees").getAsString();
+            String[] entrees_separees = entrees.split(" ");
+            listeValeurs.addAll(Arrays.asList(entrees_separees));
             DMN dmn = new DMN(listeValeurs, contenuFichier);
             System.out.println(dmn.montreResultat());
         } catch (IOException e) {
