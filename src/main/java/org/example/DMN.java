@@ -20,12 +20,13 @@ import java.util.List;
 
 public class DMN
 {
+
     private java.util.Map<String, Object> map_variables = new java.util.HashMap<String, Object>();
     private List<String> input_names;
     private DmnDecision decision;
     private DmnDecisionTableResult result;
     //constructeur qui initialise un moteur dmn, une variable inputStream et une variable decision
-    public DMN(List<String> valeurs, String fichier) throws IOException {
+    public DMN(List<String> valeurs, String fichier) throws IOException, ExceptionFichierMalFormule {
         //on recupere le fichier dmn et on le met dans une variable de type fichier
         //on recupere une inputStream à partir du fichier sourceDmn
         //BUG: le stream est nul alors que la chaine de caractères est bien reçue (heureusement)
@@ -34,6 +35,8 @@ public class DMN
         InputStream sourceFichier= new ByteArrayInputStream(fichier.getBytes());
         //pour chaque input, on cree une variable
         input_names = recupererInputs(sourceVariables);
+        //vérification de saisie correcte (qte)
+        verifierEntrees(input_names,valeurs);
         //on itère sur les input_names et on les associe aux valeurs
         for (int i = 0; i < input_names.size(); i++) {
             map_variables.put(input_names.get(i), valeurs.get(i));
@@ -59,5 +62,10 @@ public class DMN
 
     public String montreResultat(){
         return this.result.getSingleResult().toString();
+    }
+    public void verifierEntrees(List<String> varFichier,List<String> varPasse) throws ExceptionFichierMalFormule {
+        if (varFichier.size() != varPasse.size()){
+            throw new ExceptionFichierMalFormule();
+        }
     }
 }

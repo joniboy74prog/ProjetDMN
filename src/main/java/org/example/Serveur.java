@@ -31,7 +31,6 @@ public class Serveur extends WebSocketServer {
         System.out.println("closed " + conn.getRemoteSocketAddress() + " with exit code " + code + " additional info: " + reason);
     }
     //TODO: SPÉCIFIER COMPORTEMENT LORS DE SAISIE INCORRECTE
-    //TODO: CHANGER IMPLÉMENTATION DU MOTEUR DMN POUR CREER OBJET AVEC FICHIER ENVOYÉ PAR MESSAGE
     @Override
     public void onMessage(WebSocket conn, String message)  {
         System.out.println("received message from "	+ conn.getRemoteSocketAddress());
@@ -46,7 +45,11 @@ public class Serveur extends WebSocketServer {
             listeValeurs.addAll(Arrays.asList(entrees_separees));
             DMN dmn = new DMN(listeValeurs, contenuFichier);
             System.out.println(dmn.montreResultat());
-        } catch (IOException e) {
+        }
+        catch (ExceptionFichierMalFormule e){
+            System.out.println(e.getMessage());
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
