@@ -45,6 +45,7 @@ public class Serveur extends WebSocketServer {
             listeValeurs.addAll(Arrays.asList(entrees_separees));
             DMN dmn = new DMN(listeValeurs, contenuFichier);
             System.out.println(dmn.montreResultat());
+            conn.send(dmn.montreResultat());
         }
         catch (ExceptionFichierMalFormule e){
             System.out.println(e.getMessage());
